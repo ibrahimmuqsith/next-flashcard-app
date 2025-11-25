@@ -8,22 +8,26 @@ const endpoint = `${QUIZ_API_URL}${process.env.NEXT_PUBLIC_QUIZ_API_KEY}&limit=$
 
 const Flashcard = () => {
     const { data, isloading, error } = useData(endpoint)
+    const [quizCompleted, setQuizCompleted] = useState(false)
     const [currentCardIdx, setCurrentCardIdx] = useState(0)
     const [currentCard, setCurrentCard] = useState()
 
+
     useEffect(() => {
-        setCurrentCard(data[0])
-    }, [data])
+        setCurrentCard(data[currentCardIdx])
+    }, [data, currentCardIdx])
 
     const onClickPrev = () => {
-        if (currentCardIdx + 1 !== data.length) {
+        if (currentCardIdx !== 0) {
             setCurrentCardIdx(currentCardIdx - 1)
         }
     }
 
     const onClickNext = () => {
-        if (currentCardIdx !== 0) {
+        if (currentCardIdx + 1 !== data.length) {
             setCurrentCardIdx(currentCardIdx + 1)
+        } else {
+            setQuizCompleted(true)
         }
     }
 
